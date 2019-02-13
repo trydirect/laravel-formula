@@ -40,7 +40,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www
-COPY . /var/www
+#COPY . /var/www
 COPY laravel_5.7.tar.gz /var/www/laravel_5.7.tar.gz
 RUN composer update && composer install
 
