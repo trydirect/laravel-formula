@@ -1,0 +1,13 @@
+[Unit]
+Description=Laravel
+RequiredBy=docker.service
+After=docker.service
+
+[Service]
+WorkingDirectory={{app_dir}}
+ExecStartPre=-/usr/local/bin/docker-compose -f docker-compose.yml stop
+ExecStart=/usr/local/bin/docker-compose -f docker-compose.yml up   --remove-orphans --force-recreate
+ExecStop=/usr/local/bin/docker-compose -f docker-compose.yml stop
+
+[Install]
+WantedBy=multi-user.target

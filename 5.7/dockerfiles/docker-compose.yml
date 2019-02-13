@@ -1,0 +1,75 @@
+version: '2'
+
+volumes:
+  redis-data:
+     driver: local
+  laraveldb:
+    driver: local
+
+services:
+    web:
+      build: ./build/app
+      container_name: web
+      restart: always
+      entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      links:
+        - db
+      depends_on:
+        - db
+      ports:
+        - "9000:9000"
+      volumes:
+        - ./backend:/var/www
+
+    nginx:
+      image: nginx:latest
+      container_name: nginx
+      restart: always
+      #entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      depends_on:
+        - web
+      links:
+        - web
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes_from:
+        - web
+      volumes:
+        - ./configs/nginx/conf.d:/etc/nginx/conf.d/
+        - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+       # - ./configs/supervisord/nginx.conf:/etc/supervisor/conf.d/nginx.conf
+
+    db:
+      image: mysql:5.7
+      container_name: db
+      restart: always
+      ports:
+        - "3306:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=qwer123
+        - MYSQL_USER=root
+        - MYSQL_DATABASE=laravel
+      volumes:
+        - laraveldb:/var/lib/mysql
+
+
+    mq:
+      image: rabbitmq:3-management
+      restart: always
+      container_name: mq
+      env_file:
+        - .env
+      ports:
+        - "2172:5672"
+        - "5672"
+        - "21072:15672"
+
+    redis:
+      image: redis:latest
+      restart: always
+      container_name: redis
+      env_file:
+        - .env
+      volumes:
+        - redis-data:/data
