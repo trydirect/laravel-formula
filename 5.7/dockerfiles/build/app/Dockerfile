@@ -41,8 +41,8 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www
 COPY . /var/www
-#COPY src/laravel_5.7.tar.gz /var/www/laravel_5.7.tar.gz
-#RUN tar -zxf laravel_5.7.tar.gz
+COPY laravel_5.7.tar.gz /var/www/laravel_5.7.tar.gz
+RUN composer update && composer install
 
 
 #CMD ["php-fpm"]
