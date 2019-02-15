@@ -3,7 +3,7 @@ version: '2'
 volumes:
   redis-data:
      driver: local
-  laraveldb:
+  laravel-db:
     driver: local
 
 services:
@@ -23,7 +23,6 @@ services:
       image: nginx:latest
       container_name: nginx
       restart: always
-      #entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
       depends_on:
         - web
       links:
@@ -36,7 +35,6 @@ services:
       volumes:
         - ./configs/nginx/conf.d:/etc/nginx/conf.d/
         - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
-       # - ./configs/supervisord/nginx.conf:/etc/supervisor/conf.d/nginx.conf
 
     db:
       image: mysql:5.7
@@ -47,7 +45,7 @@ services:
         - MYSQL_USER=root
         - MYSQL_DATABASE=laravel
       volumes:
-        - laraveldb:/var/lib/mysql
+        - laravel-db:/var/lib/mysql
 
 
     mq:
@@ -67,3 +65,58 @@ services:
         - .env
       volumes:
         - redis-data:/data
+
+    vault:
+      image: vault
+      container_name: vault
+      restart: always
+      ports:
+        - "8200"
+      environment:
+        VAULT_ADDR: "http://127.0.0.1:8200"
+      cap_add:
+        - IPC_LOCK
+      volumes:
+        - ./configs/vault/vault.conf:/vault/config/vault.conf
+        - ./configs/vault/data:/vault/data
+
+    elasticsearch:
+      image: elasticsearch:5.4
+      restart: always
+      container_name: elasticsearch
+      ports:
+        - "9200"
+      environment:
+        ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+        discovery.type: "single-node"
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      mem_limit: 1g
+      links:
+        - web
+      depends_on:
+        - web
+      volumes:
+        - ./elasticsearch/data:/usr/share/elasticsearch/data
+
+    kibana:
+        image: kibana:5.4.3
+        restart: always
+        container_name: kibana
+        ports:
+          - "5601:5601"
+        links:
+          - elasticsearch
+        environment:
+          ELASTICSEARCH_URL: http://elasticsearch:9200
+
+    logstash:
+        build: ./build/logstash
+        container_name: logstash
+        restart: always
+        ports:
+          - "5044"
+        depends_on:
+          - elasticsearch
