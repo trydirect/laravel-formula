@@ -100,6 +100,13 @@
       <path value="$PROJECT_DIR$/vendor/bunny/bunny" />
       <path value="$PROJECT_DIR$/vendor/react/promise" />
       <path value="$PROJECT_DIR$/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/vendor/tokenly/laravel-vault" />
+      <path value="$PROJECT_DIR$/vendor/jippi/vault-php-sdk" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/weew/helpers-array" />
+      <path value="$PROJECT_DIR$/vendor/cache/cache" />
+      <path value="$PROJECT_DIR$/vendor/csharpru/vault-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

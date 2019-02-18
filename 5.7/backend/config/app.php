@@ -162,6 +162,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        /* Vault */
+        //Tokenly\Vault\VaultServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
