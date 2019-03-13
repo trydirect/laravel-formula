@@ -1,0 +1,5 @@
+network.host: 0.0.0.0
+xpack.security.enabled: true
+xpack.monitoring.enabled: false
+xpack.watcher.enabled: false
+xpack.ml.enabled: false

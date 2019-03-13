@@ -8,10 +8,12 @@ volumes:
 
 services:
     web:
-      build: ./build/app
+      image: ${REGISTRY}trydirect/laravel:5.7
       container_name: web
       restart: always
       entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       links:
         - db
       depends_on:
@@ -40,13 +42,10 @@ services:
       image: mysql:5.7
       container_name: db
       restart: always
-      environment:
-        - MYSQL_ROOT_PASSWORD=qwer123
-        - MYSQL_USER=root
-        - MYSQL_DATABASE=laravel
+      env_file:
+        - .env
       volumes:
         - laravel-db:/var/lib/mysql
-
 
     mq:
       image: rabbitmq:3-management
@@ -55,6 +54,7 @@ services:
       env_file:
         - .env
       ports:
+        - "5672:5672"
         - "21072"
 
     redis:
@@ -66,26 +66,10 @@ services:
       volumes:
         - redis-data:/data
 
-    vault:
-      image: vault
-      container_name: vault
-      restart: always
-      ports:
-        - "8200"
-      environment:
-        VAULT_ADDR: "http://127.0.0.1:8200"
-      cap_add:
-        - IPC_LOCK
-      volumes:
-        - ./configs/vault/vault.conf:/vault/config/vault.conf
-        - ./configs/vault/data:/vault/data
-
     elasticsearch:
-      image: elasticsearch:5.4
+      build: ./configs/elastic
       restart: always
       container_name: elasticsearch
-      ports:
-        - "9200"
       environment:
         ES_JAVA_OPTS: "-Xms256m -Xmx256m"
         discovery.type: "single-node"
@@ -102,7 +86,7 @@ services:
         - ./elasticsearch/data:/usr/share/elasticsearch/data
 
     kibana:
-        image: kibana:5.4.3
+        build: ./configs/kibana
         restart: always
         container_name: kibana
         ports:

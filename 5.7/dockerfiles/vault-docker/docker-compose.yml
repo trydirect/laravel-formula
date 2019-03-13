@@ -1,0 +1,27 @@
+version: '2.1'
+
+services:
+  consul:
+    image: consul:latest
+    container_name: consul
+    restart: always
+    command: "consul agent -dev -client 0.0.0.0"
+    ports:
+      - "8300:8300"
+      - "8500:8500"
+      - "8600:8600/udp"
+
+  vault:
+    image: vault:latest
+    container_name: vault
+    restart: always
+    command: "vault server -config=/vault/config/vault.hcl"
+    environment:
+      VAULT_ADDR: "http://127.0.0.1:8200"
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    volumes:
+      - ./vault/vault.hcl:/vault/config/vault.hcl
+      - ./vault/data:/vault/data

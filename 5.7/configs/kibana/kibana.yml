@@ -1,0 +1,14 @@
+elasticsearch.url: "http://localhost:9200"
+elasticsearch.username: "test"
+elasticsearch.password: "qwer123"
+server.host: "0.0.0.0"
+
+xpack:
+  security:
+    enabled: true
+  graph:
+    enabled: false
+  monitoring:
+    enabled: false
+  ml:
+    enable: false
