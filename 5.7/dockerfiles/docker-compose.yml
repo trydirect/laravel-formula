@@ -20,6 +20,7 @@ services:
         - db
       volumes:
         - ./backend:/var/www
+        - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
 
     nginx:
       image: nginx:latest
@@ -95,6 +96,8 @@ services:
           - elasticsearch
         environment:
           ELASTICSEARCH_URL: http://elasticsearch:9200
+        volumes:
+          - ./configs/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
 
     logstash:
         build: ./build/logstash
