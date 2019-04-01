@@ -25,7 +25,7 @@ ENV LC_ALL en_US.UTF-8
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pecl install php-amqplib amqp
+RUN pecl install php-amqplib amqp xdebug
 RUN docker-php-ext-configure bcmath --enable-bcmath
 RUN docker-php-ext-install -j$(nproc) bcmath
 RUN docker-php-ext-enable amqp xdebug
