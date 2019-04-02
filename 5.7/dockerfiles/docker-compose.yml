@@ -21,6 +21,11 @@ services:
       volumes:
         - ./backend:/var/www
         - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          tag: "container_{{Name}}"
 
     nginx:
       image: nginx:latest
@@ -38,6 +43,11 @@ services:
       volumes:
         - ./configs/nginx/conf.d:/etc/nginx/conf.d/
         - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          tag: "container_{{Name}}"
 
     db:
       image: mysql:5.7
@@ -47,6 +57,11 @@ services:
         - .env
       volumes:
         - laravel-db:/var/lib/mysql
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          tag: "container_{{Name}}"
 
     mq:
       image: rabbitmq:3-management
@@ -57,6 +72,11 @@ services:
       ports:
         - "5672:5672"
         - "21072"
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          tag: "container_{{Name}}"
 
     redis:
       image: redis:latest
@@ -66,6 +86,11 @@ services:
         - .env
       volumes:
         - redis-data:/data
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "10m"
+          tag: "container_{{Name}}"
 
     elasticsearch:
       build: ./configs/elastic
@@ -100,10 +125,14 @@ services:
           - ./configs/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
 
     logstash:
-        build: ./build/logstash
+        build: ./configs/logstash
         container_name: logstash
         restart: always
+        environment:
+          LS_JAVA_OPTS: "-Xms1g -Xmx4g"
         ports:
           - "5044"
         depends_on:
+          - elasticsearch
+        links:
           - elasticsearch
