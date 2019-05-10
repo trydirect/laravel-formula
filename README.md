@@ -4,7 +4,7 @@
 ![Docker Build](https://img.shields.io/docker/cloud/build/trydirect/laravel.svg)
 
 # Laravel 
-Setup Laravel development environment in few minutes.
+Setup Laravel development environment with docker-compose in few minutes.
 
 Laravel stack includes: 
 - Latest PHP7 docker image, 
