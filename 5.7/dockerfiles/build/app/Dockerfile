@@ -1,6 +1,5 @@
 FROM php:7.2-fpm
 
-
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -9,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
-    vim \
     curl \
     supervisor \
     librabbitmq-dev \
@@ -37,8 +35,7 @@ RUN docker-php-ext-install sockets
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www
-COPY laravel_5.7.tar.gz /var/www/laravel_5.7.tar.gz
+COPY laravel_5.7.tar.gz /usr/src/laravel_5.7.tar.gz

@@ -47,7 +47,6 @@ services:
       volumes:
         - laravel-db:/var/lib/mysql
 
-
     mq:
       image: rabbitmq:3-management
       restart: always
@@ -67,7 +66,7 @@ services:
         - redis-data:/data
 
     vault:
-      image: vault
+      image: vault:latest
       container_name: vault
       restart: always
       ports:
