@@ -1,0 +1,130 @@
+version: '2'
+
+volumes:
+  redis-data:
+     driver: local
+  laravel-db:
+    driver: local
+
+services:
+    web:
+      image: trydirect/laravel:5.7
+      build:
+        context: dockerfiles/build/app
+      container_name: web
+      restart: always
+      entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      links:
+        - db
+      depends_on:
+        - db
+      volumes:
+        - ./backend:/var/www
+        - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
+
+    nginx:
+      image: nginx:latest
+      container_name: nginx
+      restart: always
+      depends_on:
+        - web
+      links:
+        - web
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes_from:
+        - web
+      volumes:
+        - ./configs/nginx/conf.d:/etc/nginx/conf.d/
+        - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf
+
+    db:
+      image: mysql:5.7
+      container_name: db
+      restart: always
+      env_file:
+        - .env
+      volumes:
+        - laravel-db:/var/lib/mysql
+
+    mq:
+      image: rabbitmq:3-management
+      restart: always
+      container_name: mq
+      env_file:
+        - .env
+      ports:
+        - "5672:5672"
+        - "21072"
+
+
+    redis:
+      image: redis:latest
+      restart: always
+      container_name: redis
+      env_file:
+        - .env
+      volumes:
+        - redis-data:/data
+
+    vault:
+      image: vault:latest
+      container_name: vault
+      restart: always
+      ports:
+        - "8200"
+      environment:
+        VAULT_ADDR: "http://127.0.0.1:8200"
+      cap_add:
+        - IPC_LOCK
+      volumes:
+        - ./configs/vault/vault.conf:/vault/config/vault.conf
+        - ./configs/vault/data:/vault/data
+
+    elasticsearch:
+      build: ./configs/elastic
+      restart: always
+      container_name: elasticsearch
+      environment:
+        ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+        discovery.type: "single-node"
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      mem_limit: 1g
+      links:
+        - web
+      depends_on:
+        - web
+      volumes:
+        - ./elasticsearch/data:/usr/share/elasticsearch/data
+
+    kibana:
+        build: ./configs/kibana
+        restart: always
+        container_name: kibana
+        ports:
+          - "5601:5601"
+        links:
+          - elasticsearch
+        environment:
+          ELASTICSEARCH_URL: http://elasticsearch:9200
+        volumes:
+          - ./configs/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+
+    logstash:
+        build: ./configs/logstash
+        container_name: logstash
+        restart: always
+        environment:
+          LS_JAVA_OPTS: "-Xms1g -Xmx4g"
+        ports:
+          - "5044"
+        depends_on:
+          - elasticsearch
+        links:
+          - elasticsearch

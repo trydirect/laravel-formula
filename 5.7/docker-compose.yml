@@ -57,14 +57,11 @@ services:
         - .env
       volumes:
         - laravel-db:/var/lib/mysql
-<<<<<<< HEAD
       logging:
         driver: "json-file"
         options:
           max-size: "10m"
           tag: "container_{{Name}}"
-=======
->>>>>>> remove_extra
 
     mq:
       image: rabbitmq:3-management
