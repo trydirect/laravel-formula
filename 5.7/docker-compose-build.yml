@@ -14,8 +14,7 @@ services:
       container_name: web
       restart: always
       entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
-      environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      env_file: .env
       links:
         - db
       depends_on:

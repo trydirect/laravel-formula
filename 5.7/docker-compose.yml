@@ -8,12 +8,11 @@ volumes:
 
 services:
     web:
-      image: ${REGISTRY}trydirect/laravel:5.7
+      image: trydirect/laravel:5.7
       container_name: web
       restart: always
       entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
-      environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      env_file: .env
       links:
         - db
       depends_on:
@@ -86,13 +85,11 @@ services:
         - .env
       volumes:
         - redis-data:/data
-<<<<<<< HEAD
       logging:
         driver: "json-file"
         options:
           max-size: "10m"
           tag: "container_{{Name}}"
-=======
 
     vault:
       image: vault:latest
@@ -107,7 +104,6 @@ services:
       volumes:
         - ./configs/vault/vault.conf:/vault/config/vault.conf
         - ./configs/vault/data:/vault/data
->>>>>>> remove_extra
 
     elasticsearch:
       build: ./configs/elastic
