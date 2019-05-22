@@ -8,6 +8,9 @@ import requests
 client = docker.from_env()
 time.sleep(20)  # we expect all containers are up and running in 20 secs
 
+for c in client.containers.list():
+    print("{}: {}" .format(c.name, c.status))
+
 # NGINX
 nginx = client.containers.get('nginx')
 nginx_cfg = nginx.exec_run("/usr/sbin/nginx -T")
@@ -33,6 +36,7 @@ assert '"statusCode":404,"req":{"url":"/elasticsearch/logstash-' not in kibana.l
 # Elasticsearch
 elastic = client.containers.get('elasticsearch')
 assert elastic.status == 'running'
+print(client.api.inspect_container('elasticsearch'))
 port = client.api.inspect_container('elasticsearch')['NetworkSettings']['Ports']['9200/tcp'][0]['HostPort']
 response = requests.get("http://localhost:{}".format(port))
 assert '"name" : "elasticsearch"' in response.text
