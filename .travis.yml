@@ -45,6 +45,6 @@ notifications:
 
 after_success:
   - cd 5.7
-  - docker-compose -f docker-compose-build.yml ps
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - docker-compose -f docker-compose-build.yml images
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker push trydirect/laravel:5.7
