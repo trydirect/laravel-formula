@@ -11,7 +11,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     curl \
     supervisor \
     librabbitmq-dev \
-    software-properties-common
+    software-properties-common \
+    && groupadd -r -g 2000 laravel \
+    && useradd -u 2000 -g 2000 -m -d /home/laravel -s /bin/bash laravel && adduser laravel sudo \
+    && echo "laravel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && mkdir -p /etc/sudoers.d \
+    && touch /etc/sudoers.d/privacy \
+    && echo "Defaults        lecture = never" >> /etc/sudoers.d/privacy
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
@@ -57,3 +63,10 @@ RUN cd xdebug-2.6.1 \
 
 WORKDIR /var/www
 COPY laravel_5.7.tar.gz /usr/src/laravel_5.7.tar.gz
+ADD laravel_5.7.tar.gz /var/www/
+WORKDIR /var/www/backend
+RUN ls -lha
+RUN composer install
+RUN php artisan migrate
+RUN chown laravel. /var/www/backend
+USER laravel
