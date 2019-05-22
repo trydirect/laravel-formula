@@ -38,7 +38,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Download xdebug and install
-RUN curl -L -o http://xdebug.org/files/xdebug-2.6.1.tgz
+RUN curl -LO http://xdebug.org/files/xdebug-2.6.1.tgz
 RUN tar -xvzf xdebug-2.6.1.tgz
 RUN cd xdebug-2.6.1 \
     && phpize \
