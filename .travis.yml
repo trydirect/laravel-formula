@@ -44,10 +44,7 @@ notifications:
 
 
 after_success:
+  - cd 5.7
+  - docker-compose -f docker-compose-build.yml ps
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=trydirect/flask-formula
-  - export TAG=app
-  - docker build -f Dockerfile -t $REPO:$TRAVIS_COMMIT .
-  - docker tag $REPO:$TRAVIS_COMMIT $REPO:$TAG
-  - docker tag $REPO:$TRAVIS_COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+  - docker push trydirect/laravel:5.7
