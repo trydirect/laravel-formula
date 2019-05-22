@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2.4'
 
 volumes:
   redis-data:
@@ -33,6 +33,7 @@ services:
         - web
       links:
         - web
+     #   - kibana
       ports:
         - "80:80"
         - "443:443"
@@ -92,6 +93,7 @@ services:
 
     kibana:
         image: kibana:5.4.3
+#        build: ./configs/kibana
         restart: always
         container_name: kibana
         ports:

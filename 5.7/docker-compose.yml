@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2.4'
 
 volumes:
   redis-data:
@@ -24,7 +24,7 @@ services:
         driver: "json-file"
         options:
           max-size: "10m"
-          tag: "container_{{Name}}"
+          tag: "web"
 
     nginx:
       image: nginx:latest
@@ -34,6 +34,7 @@ services:
         - web
       links:
         - web
+     #   - kibana
       ports:
         - "80:80"
         - "443:443"
@@ -46,7 +47,7 @@ services:
         driver: "json-file"
         options:
           max-size: "10m"
-          tag: "container_{{Name}}"
+          tag: "nginx"
 
     db:
       image: mysql:5.7
@@ -60,7 +61,7 @@ services:
         driver: "json-file"
         options:
           max-size: "10m"
-          tag: "container_{{Name}}"
+          tag: "db"
 
     mq:
       image: rabbitmq:3-management
@@ -75,7 +76,7 @@ services:
         driver: "json-file"
         options:
           max-size: "10m"
-          tag: "container_{{Name}}"
+          tag: "rabbitmq"
 
     redis:
       image: redis:latest
@@ -89,49 +90,49 @@ services:
         driver: "json-file"
         options:
           max-size: "10m"
-          tag: "container_{{Name}}"
+          tag: "redis"
 
-    elasticsearch:
-      build: ./configs/elastic
-      restart: always
-      container_name: elasticsearch
-      environment:
-        ES_JAVA_OPTS: "-Xms256m -Xmx256m"
-        discovery.type: "single-node"
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-      mem_limit: 1g
-      links:
-        - web
-      depends_on:
-        - web
-      volumes:
-        - ./elasticsearch/data:/usr/share/elasticsearch/data
-
-    kibana:
-        build: ./configs/kibana
-        restart: always
-        container_name: kibana
-        ports:
-          - "5601:5601"
-        links:
-          - elasticsearch
-        environment:
-          ELASTICSEARCH_URL: http://elasticsearch:9200
-        volumes:
-          - ./configs/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-
-    logstash:
-        build: ./configs/logstash
-        container_name: logstash
-        restart: always
-        environment:
-          LS_JAVA_OPTS: "-Xms1g -Xmx4g"
-        ports:
-          - "5044"
-        depends_on:
-          - elasticsearch
-        links:
-          - elasticsearch
+#    elasticsearch:
+#      build: ./configs/elastic
+#      restart: always
+#      container_name: elasticsearch
+#      environment:
+#        ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+#        discovery.type: "single-node"
+#      ulimits:
+#        memlock:
+#          soft: -1
+#          hard: -1
+#      mem_limit: 1g
+#      links:
+#        - web
+#      depends_on:
+#        - web
+#      volumes:
+#        - ./elasticsearch/data:/usr/share/elasticsearch/data
+#
+#    kibana:
+#        image: kibana:5.4.3
+#        restart: always
+#        container_name: kibana
+#        ports:
+#          - "5601:5601"
+#        links:
+#          - elasticsearch
+#        environment:
+#          ELASTICSEARCH_URL: http://elasticsearch:9200
+#        volumes:
+#          - ./configs/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+#
+#    logstash:
+#        build: ./configs/logstash
+#        container_name: logstash
+#        restart: always
+#        environment:
+#          LS_JAVA_OPTS: "-Xms1g -Xmx4g"
+#        ports:
+#          - "5044"
+#        depends_on:
+#          - elasticsearch
+#        links:
+#          - elasticsearch

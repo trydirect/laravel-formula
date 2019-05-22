@@ -68,5 +68,5 @@ WORKDIR /var/www/backend
 RUN ls -lha
 RUN composer install
 RUN php artisan migrate
-RUN chown laravel. /var/www/backend
+RUN chown -R laravel. /var/www/backend
 USER laravel
