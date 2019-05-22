@@ -23,7 +23,7 @@ install:
   - docker-compose -f docker-compose-build.yml up -d
   - docker-compose ps
   - cd $TRAVIS_BUILD_DIR/5.7/configs/vault
-  - docker-compose -f docker-compose-build.yml up -d
+  - docker-compose up -d
 
 
 before_script:
