@@ -23,5 +23,5 @@ services:
     ports:
       - "8200:8200"
     volumes:
-      - ./vault/vault.hcl:/vault/config/vault.hcl
+      - ./vault.hcl:/vault/config/vault.hcl
       - ./vault/data:/vault/data

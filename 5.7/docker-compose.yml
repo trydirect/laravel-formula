@@ -91,20 +91,6 @@ services:
           max-size: "10m"
           tag: "container_{{Name}}"
 
-    vault:
-      image: vault:latest
-      container_name: vault
-      restart: always
-      ports:
-        - "8200"
-      environment:
-        VAULT_ADDR: "http://127.0.0.1:8200"
-      cap_add:
-        - IPC_LOCK
-      volumes:
-        - ./configs/vault/vault.conf:/vault/config/vault.conf
-        - ./configs/vault/data:/vault/data
-
     elasticsearch:
       build: ./configs/elastic
       restart: always

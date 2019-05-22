@@ -22,6 +22,8 @@ install:
   - docker-compose -f docker-compose-build.yml build
   - docker-compose -f docker-compose-build.yml up -d
   - docker-compose ps
+  - cd configs/vault
+  - docker-compose -f docker-compose-build.yml up -d
 
 
 before_script:
