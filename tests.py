@@ -39,36 +39,36 @@ print(web.logs())
 assert web.status == 'running'
 response = requests.get("http://localhost/api/v1/hello")
 assert response.status_code == 200
-assert "Hello World" in response.text
 print(response.text)
+# assert "Hello World" in response.text
 
-redis = client.containers.get('redis')
-assert redis.status == 'running'
-redis_cli = redis.exec_run("redis-cli ping")
-assert 'PONG' in redis_cli.output.decode()
-redis_log = redis.logs()
-assert "Ready to accept connections" in redis_log.decode()
+# redis = client.containers.get('redis')
+# assert redis.status == 'running'
+# redis_cli = redis.exec_run("redis-cli ping")
+# assert 'PONG' in redis_cli.output.decode()
+# redis_log = redis.logs()
+# assert "Ready to accept connections" in redis_log.decode()
 
-db = client.containers.get('db')
-assert db.status == 'running'
-cnf = db.exec_run('psql -U laravel -h 127.0.0.1 -p 5432 -c "select 1"')
-log = db.logs()
-# print(log.decode())
-assert "database system is ready to accept connections" in log.decode()
-
-time.sleep(20)   # rabbitmq needs more time to start, expect <= 40 sec
-mq = client.containers.get('mq')
-assert mq.status == 'running'
-logs = mq.logs()
-assert 'Server startup complete; 3 plugins started' in logs.decode()
-
-time.sleep(20)   # logstash needs more time to start, expect <= 60 sec
-# Logstash
-logstash = client.containers.get('logstash')
-assert logstash.status == 'running'
-# print(logstash.logs())
-assert 'Successfully started Logstash API endpoint {:port=>9600}' in logstash.logs()
-assert 'Pipeline main started' in logstash.logs()
+# db = client.containers.get('db')
+# assert db.status == 'running'
+# cnf = db.exec_run('psql -U laravel -h 127.0.0.1 -p 5432 -c "select 1"')
+# log = db.logs()
+# # print(log.decode())
+# assert "database system is ready to accept connections" in log.decode()
+#
+# time.sleep(20)   # rabbitmq needs more time to start, expect <= 40 sec
+# mq = client.containers.get('mq')
+# assert mq.status == 'running'
+# logs = mq.logs()
+# assert 'Server startup complete; 3 plugins started' in logs.decode()
+#
+# time.sleep(20)   # logstash needs more time to start, expect <= 60 sec
+# # Logstash
+# logstash = client.containers.get('logstash')
+# assert logstash.status == 'running'
+# # print(logstash.logs())
+# assert 'Successfully started Logstash API endpoint {:port=>9600}' in logstash.logs()
+# assert 'Pipeline main started' in logstash.logs()
 
 # # Elasticsearch , temporary disabled
 # elastic = client.containers.get('elasticsearch')
