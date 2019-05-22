@@ -5,6 +5,8 @@ volumes:
      driver: local
   laravel-db:
     driver: local
+  elasticdata:
+    driver: local
 
 services:
     web:
@@ -86,10 +88,10 @@ services:
       depends_on:
         - web
       volumes:
-        - ./elasticsearch/data:/usr/share/elasticsearch/data
+        - elasticdata:/usr/share/elasticsearch/data
 
     kibana:
-        build: ./configs/kibana
+        image: kibana:5.4.3
         restart: always
         container_name: kibana
         ports:
