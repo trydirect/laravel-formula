@@ -15,7 +15,7 @@ services:
         context: dockerfiles/build/app
       container_name: web
       restart: always
-      entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      entrypoint: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf -n
       env_file: .env
       links:
         - db

@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     locales \
     curl \
     supervisor \
+    git \
+    python-setuptools \
+    python-pip \
     librabbitmq-dev \
     software-properties-common \
     && groupadd -r -g 2000 laravel \
@@ -68,7 +71,13 @@ COPY ./php/www.conf /usr/local/etc/php-fpm.d/www.conf
 ADD laravel_5.7.tar.gz /var/www/
 WORKDIR /var/www/backend
 RUN ls -lha
-RUN composer install
-RUN php artisan migrate
+COPY composer.json .
 RUN chown -R laravel. /var/www/backend
+
+USER laravel
+RUN /usr/local/bin/composer update && /usr/local/bin/composer install
+RUN php artisan migrate
+
+USER root
 RUN mkdir -p /var/log/supervisor && chown -R laravel. /var/log/supervisor
+RUN pip install git+https://github.com/Supervisor/supervisor

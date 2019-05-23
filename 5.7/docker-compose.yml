@@ -11,15 +11,17 @@ services:
       image: trydirect/laravel:5.7
       container_name: web
       restart: always
-      entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      entrypoint: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf -n
       env_file: .env
       links:
         - db
       depends_on:
         - db
       volumes:
-        - ./backend:/var/www/backend
+#        - ./backend:/var/www/backend
         - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
+        - ./configs/php/php.ini:/usr/local/etc/php.ini
+        - ./configs/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
       logging:
         driver: "json-file"
         options:
