@@ -22,7 +22,10 @@ services:
       depends_on:
         - db
       volumes:
+        - ./backend:/var/www/backend
         - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
+        - ./configs/php/php.ini:/usr/local/etc/php.ini
+        - ./configs/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
 
     nginx:
       image: nginx:latest

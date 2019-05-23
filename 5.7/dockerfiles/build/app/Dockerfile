@@ -70,6 +70,8 @@ COPY laravel_5.7.tar.gz /usr/src/laravel_5.7.tar.gz
 COPY ./php/www.conf /usr/local/etc/php-fpm.d/www.conf
 ADD laravel_5.7.tar.gz /var/www/
 WORKDIR /var/www/backend
+# not secure to COPY .env.example .env
+# this should be done manually later
 RUN ls -lha
 COPY composer.json .
 RUN chown -R laravel. /var/www/backend
