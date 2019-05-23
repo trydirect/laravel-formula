@@ -18,7 +18,7 @@ services:
       depends_on:
         - db
       volumes:
-        - ./backend:/var/www
+        - ./backend:/var/www/backend
         - ./configs/php/xdebug.ini:/usr/local/lib/php/doc/xdebug/xdebug.ini
       logging:
         driver: "json-file"
