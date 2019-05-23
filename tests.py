@@ -43,10 +43,6 @@ print(web.logs())
 assert 'fpm is running' in web.logs()
 assert 'app-00 entered RUNNING state' in web.logs()
 assert web.status == 'running'
-response = requests.get("http://localhost/test")
-print(response.text)
-assert response.status_code == 200
-# assert "Hello World" in response.text
 
 redis = client.containers.get('redis')
 assert redis.status == 'running'
@@ -87,3 +83,7 @@ assert 'Pipeline main started' in logstash.logs()
 # assert response.status_code == 200
 # assert ' bound_addresses {0.0.0.0:9200}' in elastic.logs()
 
+response = requests.get("http://localhost/test")
+print(response.text)
+assert response.status_code == 200
+assert "Hello World!" in response.text
