@@ -74,6 +74,7 @@ WORKDIR /var/www/backend
 # this should be done manually later
 RUN ls -lha
 COPY composer.json .
+COPY composer.lock .
 RUN chown -R laravel. /var/www/backend
 
 USER laravel
