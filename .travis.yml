@@ -28,7 +28,7 @@ before_script:
 - cd $TRAVIS_BUILD_DIR
 script:
 - bash ./.travis/linters.sh
-- docker cp configs/php/env.example web:/var/www/backend/.env
+- docker cp 5.7/configs/php/env.example web:/var/www/backend/.env
 - python tests.py
 notifications:
   slack:
