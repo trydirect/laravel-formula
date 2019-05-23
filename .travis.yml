@@ -34,6 +34,8 @@ before_script:
 
 script:
   - bash ./.travis/linters.sh
+  - groupadd -r -g 2000 laravel
+  - useradd -u 2000 -g 2000 -m -d /home/laravel -s /bin/bash laravel && adduser laravel sudo
   - python tests.py
 
 
