@@ -69,4 +69,5 @@ RUN ls -lha
 RUN composer install
 RUN php artisan migrate
 RUN chown -R laravel. /var/www/backend
+RUN mkdir -p /var/log/supervisor && chown -R laravel. /var/log/supervisor
 USER laravel
