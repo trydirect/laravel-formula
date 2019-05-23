@@ -1,53 +1,38 @@
 language: python
 python:
-  - 2.7
-
+- 2.7
 env:
+  matrix:
   - DOCKER_CONTENT_TRUST=0
-
+  global:
+    secure: OThHhevEEPozg6Uo4cVj4rRLJPqQaGiukuBysjuYXYAS6nHlTAIb0Q7KHUOgtzrzKo+DA5a1NKepEyWaH+vpJKOWpoNjXtxi8OLRxj1EgisAmmi4NwrSMHfv760WRbc32xfuC6DM9DNXBO9Mk8CHpd4i2FeU/b+gjVvGCwqVTTXrQtWXEmjk4R1yU9qLggImFEcBCQPdLE7KaXCqURD3q5P1s5pHQDVFYTw3mzHr00lK4FCNr4HuxL7EsqnvWzpFgcgSpYbhlF3INcNIEsdpHne/CuzPYFhLNxB3SMkBkVMSzZsXlHB0ijKyzR4zv377QpoMtQN+kHD5DhcWpA3Ldre8ThHGujMRviC+RC9rTfzwKd8hFJlaRTK4YJDWTmBVkPArGSykYOAVhcnrZNEMuznZ1TVzeC2JV/zEMcDYlBw3jdsSDd37ofGTxrKLZGcF+g233vO2IHMlwROB4ujXheV6SdZS9dDokL9QFDnJq740Q5AKnDrTagaFRpAuuTJk0SGmPqurn7g8Wt531ILLYagm+Vsgj6JQYGk4eMCOiJ8RIAQr3udAOK7pzHhEJGy61M0JYAP1WzVmj8tNUU8+YR6eS0LX0Trt7yi/lcQ/8Bmy2hWqxQoJdb6laCDoy4sKZHSgcVsK/PcFjBh92KMOHk7dYhW05D53mtSXLQ6FMRE=
 services:
-  - docker
-
+- docker
 before_install:
-  # update is required to update the repositories to see the new packages for
-  # Docker.
-  - sudo apt-get update
-  - docker-compose --version
-  - pip install docker-compose --upgrade
-  - docker-compose --version
-
-
+- sudo apt-get update
+- docker-compose --version
+- pip install docker-compose --upgrade
+- docker-compose --version
 install:
-  - cd 5.7
-  - docker-compose -f docker-compose-build.yml build
-  - docker-compose -f docker-compose-build.yml up -d
-  - docker-compose ps
-  - cd $TRAVIS_BUILD_DIR/5.7/configs/vault
-  - docker-compose up -d
-
-
+- cd 5.7
+- docker-compose -f docker-compose-build.yml build
+- docker-compose -f docker-compose-build.yml up -d
+- docker-compose ps
+- cd $TRAVIS_BUILD_DIR/5.7/configs/vault
+- docker-compose up -d
 before_script:
-  - cat /etc/group
-  - sudo groupadd -r -g 2000 laravel
-  - sudo useradd -u 2000 -g 2000 -m -d /home/laravel -s /bin/bash laravel && adduser laravel sudo
-  - pip install requests
-  - pip install docker
-  - cd $TRAVIS_BUILD_DIR
-
-
+- pip install requests
+- pip install docker
+- cd $TRAVIS_BUILD_DIR
 script:
-  - bash ./.travis/linters.sh
-  - python tests.py
-
-
+- bash ./.travis/linters.sh
+- python tests.py
 notifications:
   slack:
     rooms:
-      - optimum-team:GycletOWK4Kt95GktwYwfUMp#build
-
-
+    - optimum-team:GycletOWK4Kt95GktwYwfUMp#build
 after_success:
-  - cd 5.7
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-  - docker-compose -f docker-compose-build.yml images
-  - docker push trydirect/laravel:5.7
+- cd 5.7
+- echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+- docker-compose -f docker-compose-build.yml images
+- docker push trydirect/laravel:5.7
