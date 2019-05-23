@@ -13,11 +13,13 @@ for c in client.containers.list():
     if 'running' not in c.status:
         print(c.logs())
 
-# # NGINX
+# NGINX
 nginx = client.containers.get('nginx')
 nginx_cfg = nginx.exec_run("/usr/sbin/nginx -T")
 assert nginx.status == 'running'
 print(nginx_cfg.output.decode())
+assert 'nginx: configuration file /etc/nginx/nginx.conf test is successful' in nginx_cfg.output.decode()
+
 # assert 'server_name _;' in nginx_cfg.output.decode()
 # assert "error_log /proc/self/fd/2" in nginx_cfg.output.decode()
 assert 'HTTP/1.1" 500' not in nginx.logs()
@@ -38,11 +40,12 @@ assert '"statusCode":404,"req":{"url":"/elasticsearch/logstash-' not in kibana.l
 
 web = client.containers.get('web')
 print(web.logs())
-# assert 'spawned uWSGI worker 4' in web.logs()
+assert 'fpm is running' in web.logs()
+assert 'app-00 entered RUNNING state' in web.logs()
 assert web.status == 'running'
-response = requests.get("http://localhost/api/v1/hello")
-assert response.status_code == 200
+response = requests.get("http://localhost/test")
 print(response.text)
+assert response.status_code == 200
 # assert "Hello World" in response.text
 
 redis = client.containers.get('redis')
