@@ -63,6 +63,8 @@ RUN cd xdebug-2.6.1 \
 
 WORKDIR /var/www
 COPY laravel_5.7.tar.gz /usr/src/laravel_5.7.tar.gz
+
+COPY ./php/www.conf /usr/local/etc/php-fpm.d/www.conf
 ADD laravel_5.7.tar.gz /var/www/
 WORKDIR /var/www/backend
 RUN ls -lha
