@@ -29,6 +29,7 @@ before_script:
 script:
 - bash ./.travis/linters.sh
 - docker cp 5.7/configs/php/env.example web:/var/www/backend/.env
+- docker-compose -f docker-compose-build.yml restart web
 - python tests.py
 notifications:
   slack:
