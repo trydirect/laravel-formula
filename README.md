@@ -9,7 +9,7 @@
 # Laravel development template.
 Laravel development template - project generator/development environment.
 Can be used by Laravel developers to start quickly on building web apps, restful api's etc.
-This stack allows you to setup development environment in a single docker-compose command
+This stack allows you to setup development environment with a single docker-compose command
 
 ## Stack includes
 
