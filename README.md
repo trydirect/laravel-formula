@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/trydirect/laravel.svg?branch=master)](https://travis-ci.com/trydirect/laravel)
+[![Build Status](https://travis-ci.com/trydirect/laravel-formula.svg?branch=master)](https://travis-ci.com/trydirect/laravel-formula)
 ![Docker Stars](https://img.shields.io/docker/stars/trydirect/laravel.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/trydirect/laravel.svg)
 ![Docker Automated](https://img.shields.io/docker/cloud/automated/trydirect/laravel.svg)
