@@ -26,6 +26,7 @@ before_script:
 - pip install docker
 - cd $TRAVIS_BUILD_DIR/5.7
 - docker cp configs/php/env.example web:/var/www/backend/.env
+- docker-compose -f docker-compose-build.yml exec -it web composer install
 - docker-compose -f docker-compose-build.yml restart web
 - cd $TRAVIS_BUILD_DIR
 script:
