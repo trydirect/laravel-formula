@@ -89,6 +89,12 @@ routes
 └── web.php
 ```
 
+## Quick deployment to cloud
+##### Amazon AWS, Digital Ocean, Hetzner and others
+[<img src="https://img.shields.io/badge/quick%20deploy-%40try.direct-brightgreen.svg">](https://dev.try.direct/server/user/deploy/ImxhcmF2ZWwtZm9ybXVsYXw2fDIi.EAoFeA.nBrVq7PjzFGucxAw44D1Sf9J7ws/)
+
+
+
 # Contributing
 
 1. Fork it (https://github.com/trydirect/laravel-formula/fork)
