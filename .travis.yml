@@ -4,9 +4,6 @@ python:
 env:
   matrix:
   - DOCKER_CONTENT_TRUST=0
-  global:
-  - secure: PqsoWM1lB3CTrmw5himoZpLTjvk1w71omutnmN3E7TiIm6xHtLZubRv5h7FWqQSDrpkTgOGRePgaVB6YR6EddxRZWgfmvmmk/xRU73tyFeSqh0ZS5uTGkJnNCAgbZ5lAy8awLRNe/oo7gOD2h3jWMUTHJsTbm7SzXEPSP2th1GaGNeRUuynjRkE1kloUO99TcQtk4V0hnVKbCtVIhnKO6yo2XdChxjOWtTshZAimEIzh3FpKfIKaoqvLJsS9kgdvfIMuzb7TMRvWyGNF++Z5n2VAJelXrR1a4WMipx91H8DDD3p/Tkzl7oQ5KTQqJzRgmSZRU+3WPhiAYSpZiaOtsSgosJHxhSKnPLNp9eJR3PnlObC1npqf/uXslkOq++SIZaX5s2t57WYObS5KuMAtCua1KDVlOIO5MxIuxxPl5H+o1taiqFqD8xIdPYh3ISgyDkuoCIymCm3Hdx778tMyEK2BzI9gcI2twYT5wOps92g1z93szyy39VvCumHTVZ9f7PHZjNEc9vxCWvZsmrMP/JaXTATAHTxgYviMQmVgKRzRkVRjNZNAE//DQlsh0td/iRFGLuoH+fUAnB2GuPbBqTH/J90h/pyP1whC9RjFKaOY2crHFHFtoOHxipuYOngR+t46sdpIGfKQtxHFSEsxdO9O8jLaSABIOKKoothJuo4=
-  - secure: QAzUfC10VBhA3wQj9Dwh7mx822azO5IPj4fIp7Y+gpyY6v2QjDOU4cW/loFWYtNdMnxb7X/4opS3HbjYKHXYrQ+7yA8b1f/cPcjQneTicSeBiI8AXauXP+9+t7wwtIVd6VQUkrrpanf8iwG6wwGMDnOW4V3jOK3ojCYZhGE06OPRIRCO7jprPVCtO8Ukp+KqmUmonLvOGHbfYNVD9BrY/n5wLL8ePKIm3azzHDKyU+2znL8qg+wYyf1p0jdTpmqoFKDMOcmEyQTK1dkdbvicScXsaixG1EDS2d7zVh6OjWNzgshiH7jRuKSD2MFRJTodvmHULpNjtx6FzCy9Sh8REwgKJSUw0aE2477zDwUrceoU7Z9Y9DIlp3Bl8pZRxQ6VtwcTeLYEyCJSVeCMYI+DxbboeZmBDPov35uEsBj92sdLOdtzqzlMgEkAtq+nY3GI8HRVOE06mKNOL6ZUS81kVKBAxPerYsEuwjRo8PttLUILQiXtOlL8ZmYpwpSO0fPfusABbKD8j9i5pkP76YD56j5qe3zfVZktCjPaJNS1HKWrhUl29fhfz8ahCOw5KKTphZVsycFZWadu9ai1O8qQ3oypAbgJf65pQwxyC8bFwm1NicAU0YcCu2v9JckEarWzV/bduQuiVqXSBdOI2YTywRYToTJKO5gBhfQDDmyuElQ=
 services:
 - docker
 before_install:
@@ -35,7 +32,7 @@ script:
 notifications:
   slack:
     rooms:
-    - optimum-team:GycletOWK4Kt95GktwYwfUMp#build
+    - optimum-team:"$SLACK"#build
 after_success:
 - cd 5.7
 - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
