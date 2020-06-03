@@ -38,13 +38,18 @@ $ git clone https://github.com/trydirect/laravel-formula.git
 ```
 Then build it via docker-compose:
 ```sh
-$ cd laravel-formula/5.7
+$ cd laravel-formula/7.6.0
 $ docker-compose up -d
 ```
 Let's finish setup with configuring stack
 ```
 cp backend/.env.example backend/.env
-docker-compose exec web composer install
+
+docker-compose exec web bash -c "composer install"
+
+docker-compose exec web bash -c "chmod -R 777 /var/www/backend/storage/"
+
+docker-compose exec web bash -c "php artisan key:generate"
 ```
 Now, let's check the result
 ```
