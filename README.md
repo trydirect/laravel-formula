@@ -13,8 +13,9 @@ This stack allows you to setup development environment with a single docker-comp
 
 ## Stack includes
 
-- PHP7.2/fpm docker image,
-- Laravel 5.7
+- PHP 7.4-fpm docker image,
+- Laravel 7.6.0
+- Xdebug 2.9.6
 - NGINX latest (tuned with letsencrypt and self signed certificate support)
 - MySQL 5.7
 - Redis latest
@@ -51,40 +52,24 @@ docker-compose exec web bash -c "chmod -R 777 /var/www/backend/storage/"
 
 docker-compose exec web bash -c "php artisan key:generate"
 ```
-Now, let's check the result
-```
-$ curl http://localhost/test
-
-HTTP/1.1 200 OK
-Server: nginx/1.15.12
-Content-Type: text/html; charset=UTF-8
-Transfer-Encoding: chunked
-Connection: keep-alive
-X-Powered-By: PHP/7.2.18
-Set-Cookie: XDEBUG_SESSION=laravel; expires=Fri, 24-May-2019 17:02:22 GMT; Max-Age=3600; path=/
-Cache-Control: no-cache, private
-Date: Fri, 24 May 2019 16:02:23 GMT
-Set-Cookie: XSRF-TOKEN=eyJpdiI6IlNCNWxlOGdkXC9qa2ZlQUMxTnlpeFdnPT0iLCJ2YWx1ZSI6InZDQzlJM1NvZjhlZW5xZE8rN3ZHVDNDNTFNa0hGK0RRcFhKVDRpTnZVY0tpeWdoUnhXbDJ1Uys1QnpXeFpnQ2QiLCJtYWMiOiI4ZDAwODFmMDBhOTJkZDNhOGRlOGZhYjRmY2ExYzdhMjJjMDMxZmNhMTdjNzQ5Zjc5Zjc1NjI3NWEzZjJiMWJlIn0%3D; expires=Fri, 24-May-2019 18:02:23 GMT; Max-Age=7200; path=/
-Set-Cookie: laravel_session=eyJpdiI6IlwvNjZTVHY3MXBcL3hsbWF1a0t0VG1Sdz09IiwidmFsdWUiOiJPKzJvb2dmeG5lSFE1Z2VzSUJaYUQ0NXlwRGxJVUNnd1ZpNlFiV0NPYkZlSW9pV1A1d1NiZmpxYXJJaTFRS2R3IiwibWFjIjoiOTgyMzczMmUxZGNlM2U1OGEzOGI0YTE3YTkwMGIxN2UyNGI5NTUyZjM1MWU0MGNhNzE1ZDk3NjBjNjY2ZDI0YiJ9; expires=Fri, 24-May-2019 18:02:23 GMT; Max-Age=7200; path=/; httponly
-
-Hello World!%
-```
 
 Let's check running containers
-```
 
+```
  $ docker-compose ps
- 
-Name               Command               State                                                   Ports
--------------------------------------------------------------------------------------------------------------------------
-db      docker-entrypoint.sh mysqld      Up      3306/tcp, 33060/tcp
-mq      docker-entrypoint.sh rabbi ...   Up      15671/tcp, 15672/tcp, 0.0.0.0:32933->21072/tcp, 25672/tcp, 4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp
-nginx   nginx -g daemon off;             Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
-redis   docker-entrypoint.sh redis ...   Up      6379/tcp
-web     /usr/local/bin/supervisord ...   Up      9000/tcp
+
+IMAGE                         COMMAND              CREATED         STATUS              PORTS 
+kibana:5.4.3            "/docker-entrypoint.…"   2 hours ago         Up         0.0.0.0:5601->5601/tcp
+logstash                "/usr/local/bin/dock…"   2 hours ago         Up         9600/tcp, 0.0.0.0:32775->5044/tcp
+nginx:latest            "/docker-entrypoint.…"   2 hours ago         Up         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp
+elasticsearch           "/docker-entrypoint.…"   2 hours ago         Up         9200/tcp, 9300/tcp
+laravel:7.6.0           "/usr/local/bin/supe…"   2 hours ago         Up         9000/tcp
+rabbitmq:3-management   "docker-entrypoint.s…"   2 hours ago         Up         4369/tcp, 5671/tcp, 15671-15672/tcp, 25672/tcp, 0.0.0.0:5672->5672/tcp, 0.0.0.0:32774->21072/tcp
+mysql:5.7               "docker-entrypoint.s…"   2 hours ago         Up         3306/tcp, 33060/tcp
+redis:latest            "docker-entrypoint.s…"   2 hours ago         Up         6379/tcp       
 ```
 
-Find examples in laravel-formula/5.7/backend:                 
+Find examples in laravel-formula/7.6.0/backend:                 
 ```
 $ tree routes
 routes
