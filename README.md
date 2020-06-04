@@ -46,7 +46,7 @@ Let's finish setup with configuring stack
 ```
 cp backend/.env.example backend/.env
 
-docker-compose exec web bash -c "composer install"
+docker-compose exec web bash -c "cd backend && composer install"
 
 docker-compose exec web bash -c "chmod -R 777 /var/www/backend/storage/"
 

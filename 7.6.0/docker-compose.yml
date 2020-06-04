@@ -11,7 +11,7 @@ services:
       image: trydirect/laravel:7.6.0
       container_name: web
       restart: always
-      entrypoint: /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+      entrypoint: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
       env_file: .env
       links:
         - db
